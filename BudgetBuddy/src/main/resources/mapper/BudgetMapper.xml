@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.budgetbuddy.finance.repository.BudgetRepository">
+	<select id="selectBudgetList" resultType="com.budgetbuddy.finance.dto.BudgetDTO">
+		SELECT 
+			  RECORD_ID
+			, USER_ID
+			, RECORD_TYPE
+			, RECORD_DTM
+			, RECORD_DETAIL
+			, RECORD_CD
+			, RECORD_OUT_PAYMENT_CD
+			, RECORD_MEMO
+			, RECORD_DEL_YN
+			, UPD_DT
+			, UPD_USER_ID
+		FROM TBL_BUDGET_RECORDS
+		WHERE 1=1
+		AND USER_ID = #{userId}
+		AND DATE_FORMAT(record_dtm, '%Y-%m') = #{recordDt}
+	</select>
+	
+	<select id="getMonthlyTotal" resultType="com.budgetbuddy.finance.dto.BudgetDTO">
+		SELECT 
+			IFNULL(SUM(CASE WHEN RECORD_TYPE = '0' THEN RECORD_AMOUNT END), 0) AS MONTHLY_EXPEND_SUM ,
+			IFNULL(SUM(CASE WHEN RECORD_TYPE = '1' THEN RECORD_AMOUNT END), 0) AS MONTHLY_INCOME_SUM  
+		FROM TBL_BUDGET_RECORDS
+		WHERE 1=1
+		AND USER_ID = #{userId}
+		AND DATE_FORMAT(record_dtm, '%Y-%m') = #{recordDt}
+	</select>
+</mapper>
