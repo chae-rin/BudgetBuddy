@@ -10,6 +10,7 @@ public class BudgetDTO {
 	private String user_id;
 	private String record_type;
 	private String record_dtm;
+	private int record_amount;
 	private String record_detail;
 	private String record_cd;
 	private String record_out_payment_cd;
@@ -19,4 +20,5 @@ public class BudgetDTO {
 	private String upd_user_id;
 	private int monthly_expend_sum;
 	private int monthly_income_sum;
+	private String record_date;
 }

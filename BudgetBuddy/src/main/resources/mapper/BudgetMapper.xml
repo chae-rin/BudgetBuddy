@@ -7,6 +7,7 @@
 			, USER_ID
 			, RECORD_TYPE
 			, RECORD_DTM
+			, RECORD_AMOUNT
 			, RECORD_DETAIL
 			, RECORD_CD
 			, RECORD_OUT_PAYMENT_CD
@@ -14,10 +15,12 @@
 			, RECORD_DEL_YN
 			, UPD_DT
 			, UPD_USER_ID
+			, DATE_FORMAT(RECORD_DTM, '%Y-%m-%d') as RECORD_DATE
 		FROM TBL_BUDGET_RECORDS
 		WHERE 1=1
 		AND USER_ID = #{userId}
 		AND DATE_FORMAT(record_dtm, '%Y-%m') = #{recordDt}
+		ORDER BY RECORD_DTM DESC
 	</select>
 	
 	<select id="getMonthlyTotal" resultType="com.budgetbuddy.finance.dto.BudgetDTO">
