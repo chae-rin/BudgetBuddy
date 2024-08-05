@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.budgetbuddy.finance.repository.CommonRepository">
+	<select id="selectCodeList" resultType="com.budgetbuddy.finance.dto.CommonDTO">
+		SELECT CODE_ID, CODE_NAME
+		FROM TBL_CMM_CD
+		WHERE GRP_CODE_ID = #{grpCodeId}
+		AND GRP_CODE_USE_YN='Y'
+		ORDER BY CODE_ID
+	</select>
+	
+</mapper>
