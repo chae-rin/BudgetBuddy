@@ -9,7 +9,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,9 +32,11 @@ public class BudgetController {
 	BudgetService budgetService;
 	
 	// 수입/지출 내역 조회
-    @PostMapping("/list")
+	@GetMapping("/list")
     public ResponseEntity<Map<String, Object>> selectBudgetList(@RequestParam Map<String,Object> params) {
     	
+		System.out.println("list");
+		
     	Map<String, Object> result = new HashMap<>();
     	try 
     	{
@@ -74,8 +79,8 @@ public class BudgetController {
     }
     
     
-    // 월별 수입/지출 
-    @PostMapping(value = "/monthly/total")
+    // 월별 수입/지출 합계 조회
+    @GetMapping(value = "/monthly/total")
     public ResponseEntity<Map<String, Object>> getMonthlyTotal(@RequestParam Map<String,Object> params) {
 
         Map<String, Object> result = new HashMap<>();
@@ -87,14 +92,95 @@ public class BudgetController {
         	result.put("monthly_expend_sum", budgetTotal.getMonthly_expend_sum());
         	result.put("monthly_income_sum", budgetTotal.getMonthly_income_sum());
         } 
-        catch (Exception ex) 
+        catch (Exception e) 
         {
-            result.put("error", ex.getMessage());
+        	e.printStackTrace();
+            result.put("error", e.getMessage());
         }
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(result);
     }
+    
+    
+    // 수입/지출 내역 등록
+    @PostMapping(value = "")
+    public ResponseEntity<Map<String, Object>> regBudgetInfo(@RequestParam Map<String, String> params) {
 
+        Map<String, Object> response = new HashMap<>();
+
+        try 
+        {
+        	int regResult = budgetService.regBudgetInfo( params );
+            String result = (regResult == 0)? "FAIL" : "SUCCESS";
+           
+            response.put("data", result);
+        } 
+        catch (Exception e) 
+        {
+        	e.printStackTrace();
+        	response.put("error", e.getMessage());
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+    
+    
+    // 수입/지출 정보 조회
+ 	@GetMapping("/info")
+     public ResponseEntity<Map<String, Object>> getBudgetInfo(@RequestParam Map<String,Object> params) {
+     	
+ 		System.out.println("info");
+ 		System.out.println(params);
+ 		
+     	Map<String, Object> result = new HashMap<>();
+     	try 
+     	{
+ 			BudgetDTO budgetList = budgetService.getBudgetInfo(params);
+ 			
+ 			System.out.println(budgetList.getRecord_amount());
+ 			result.put("data", budgetList);
+ 		} 
+     	catch (Exception e) 
+     	{
+     		e.printStackTrace();
+     		result.put("error", e.getMessage());
+ 		}
+
+     	return ResponseEntity
+                 .status(HttpStatus.OK)
+                 .body(result);
+     }
+ 	
+ 	
+ 	 // 수입/지출 내역 수정
+    @PutMapping(value = "/{recordId}")
+    public ResponseEntity<Map<String, Object>> updBudgetInfo(@PathVariable String recordId, @RequestParam Map<String, String> params) {
+
+        Map<String, Object> response = new HashMap<>();
+        
+        System.out.println("update");
+        System.out.println( recordId );
+        System.out.println( params );
+        try 
+        {
+        	int updResult = budgetService.updBudgetInfo( params );
+            String result = (updResult == 0)? "FAIL" : "SUCCESS";
+           
+            response.put("data", result);
+        } 
+        catch (Exception e) 
+        {
+        	e.printStackTrace();
+        	response.put("error", e.getMessage());
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+    
 }

@@ -3,20 +3,23 @@
 <mapper namespace="com.budgetbuddy.finance.repository.BudgetRepository">
 	<select id="selectBudgetList" resultType="com.budgetbuddy.finance.dto.BudgetDTO">
 		SELECT 
-			  RECORD_ID
-			, USER_ID
-			, RECORD_TYPE
-			, RECORD_DTM
-			, RECORD_AMOUNT
-			, RECORD_DETAIL
-			, RECORD_CD
-			, RECORD_OUT_PAYMENT_CD
-			, RECORD_MEMO
-			, RECORD_DEL_YN
-			, UPD_DT
-			, UPD_USER_ID
+			   A.RECORD_ID
+			, A.USER_ID
+			, A.RECORD_TYPE
+			, A.RECORD_DTM
+			, A.RECORD_AMOUNT
+			, A.RECORD_DETAIL
+			, A.RECORD_CD
+		    , B.CODE_NAME
+			, A.RECORD_OUT_PAYMENT_CD
+			, A.RECORD_MEMO
+			, A.RECORD_DEL_YN
+			, A.UPD_DT
+			, A.UPD_USER_ID
 			, DATE_FORMAT(RECORD_DTM, '%Y-%m-%d') as RECORD_DATE
-		FROM TBL_BUDGET_RECORDS
+		FROM TBL_BUDGET_RECORDS A
+		LEFT JOIN TBL_CMM_CD B
+		ON A.RECORD_CD = B.CODE_ID
 		WHERE 1=1
 		AND USER_ID = #{userId}
 		AND DATE_FORMAT(record_dtm, '%Y-%m') = #{recordDt}
@@ -32,4 +35,77 @@
 		AND USER_ID = #{userId}
 		AND DATE_FORMAT(record_dtm, '%Y-%m') = #{recordDt}
 	</select>
+	
+	<insert id="regBudgetInfo" parameterType="hashMap">
+		INSERT INTO TBL_BUDGET_RECORDS(
+			RECORD_ID
+			, USER_ID
+			, RECORD_AMOUNT
+			, RECORD_TYPE
+			, RECORD_CD
+			, RECORD_DETAIL
+			, RECORD_OUT_PAYMENT_CD
+			, RECORD_DTM
+			, RECORD_MEMO
+			, RECORD_DEL_YN
+			, UPD_DT
+			, UPD_USER_ID
+		)
+		VALUES(
+			  (select ifnull(max(a.record_id),0)+1 from TBL_BUDGET_RECORDS a)
+		    , #{userId}
+		    , #{recordAmount}
+		    , #{recordType}
+		    , #{recordCategory}
+		    , #{recordDetail}
+		    , #{recordPayment}
+		    , #{recordDtm}
+		    , #{recordMemo}
+		    , 'N'
+		    , sysdate()
+		    , #{userId} 
+		)
+	</insert>
+	
+	<select id="getBudgetInfo" resultType="com.budgetbuddy.finance.dto.BudgetDTO">
+		SELECT 
+			  A.RECORD_ID
+			, A.USER_ID
+			, A.RECORD_TYPE
+			, A.RECORD_DTM
+			, A.RECORD_AMOUNT
+			, A.RECORD_DETAIL
+			, A.RECORD_CD
+		    , B.CODE_NAME
+			, A.RECORD_OUT_PAYMENT_CD
+			, A.RECORD_MEMO
+			, A.RECORD_DEL_YN
+			, A.UPD_DT
+			, A.UPD_USER_ID
+			, DATE_FORMAT(RECORD_DTM, '%Y-%m-%d') as RECORD_DATE
+		FROM TBL_BUDGET_RECORDS A
+		LEFT JOIN TBL_CMM_CD B
+		ON A.RECORD_CD = B.CODE_ID
+		WHERE 1=1
+		AND RECORD_ID = #{recordId}
+		AND USER_ID = #{userId}
+	</select>
+	
+	
+	<update id="updBudgetInfo" parameterType="hashMap">
+		UPDATE TBL_BUDGET_RECORDS
+		SET 
+			 RECORD_AMOUNT    = #{recordAmount}
+			, RECORD_TYPE     = #{recordType}
+			, RECORD_CD		  = #{recordCategory}
+			, RECORD_DETAIL   = #{recordDetail}
+			, RECORD_OUT_PAYMENT_CD = #{recordPayment}
+			, RECORD_DTM      = #{recordDtm}
+			, RECORD_MEMO     = #{recordMemo}
+			, UPD_DT          = sysdate() 
+			, UPD_USER_ID     = #{userId}  
+		WHERE 1=1
+		AND RECORD_ID = #{recordId}
+		AND USER_ID = #{userId}
+	</update>
 </mapper>

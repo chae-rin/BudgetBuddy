@@ -13,6 +13,7 @@ public class BudgetDTO {
 	private int record_amount;
 	private String record_detail;
 	private String record_cd;
+	private String code_name;
 	private String record_out_payment_cd;
 	private String record_memo;
 	private String record_del_yn;
