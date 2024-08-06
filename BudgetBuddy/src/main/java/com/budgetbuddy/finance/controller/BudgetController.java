@@ -158,15 +158,12 @@ public class BudgetController {
  	
  	 // 수입/지출 내역 수정
     @PutMapping(value = "/{recordId}")
-    public ResponseEntity<Map<String, Object>> updBudgetInfo(@PathVariable String recordId, @RequestParam Map<String, String> params) {
+    public ResponseEntity<Map<String, Object>> updBudgetInfo(@PathVariable String recordId, @RequestParam Map<String, Object> params) {
 
         Map<String, Object> response = new HashMap<>();
-        
-        System.out.println("update");
-        System.out.println( recordId );
-        System.out.println( params );
         try 
         {
+        	params.put("size", params.size());
         	int updResult = budgetService.updBudgetInfo( params );
             String result = (updResult == 0)? "FAIL" : "SUCCESS";
            

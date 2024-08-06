@@ -23,6 +23,7 @@
 		WHERE 1=1
 		AND USER_ID = #{userId}
 		AND DATE_FORMAT(record_dtm, '%Y-%m') = #{recordDt}
+		AND RECORD_DEL_YN = 'N'
 		ORDER BY RECORD_DTM DESC
 	</select>
 	
@@ -52,7 +53,7 @@
 			, UPD_USER_ID
 		)
 		VALUES(
-			  (select ifnull(max(a.record_id),0)+1 from TBL_BUDGET_RECORDS a)
+			  (select ifnull(max(a.record_id+0),0)+1 from TBL_BUDGET_RECORDS a)
 		    , #{userId}
 		    , #{recordAmount}
 		    , #{recordType}
@@ -92,10 +93,15 @@
 	</select>
 	
 	
-	<update id="updBudgetInfo" parameterType="hashMap">
+	<update id="updBudgetInfo" parameterType="java.util.HashMap">
 		UPDATE TBL_BUDGET_RECORDS
 		SET 
-			 RECORD_AMOUNT    = #{recordAmount}
+		<choose>
+			<when test="size == 2">
+				RECORD_DEL_YN = 'Y'
+			</when>
+			<otherwise>
+				RECORD_AMOUNT    = #{recordAmount}
 			, RECORD_TYPE     = #{recordType}
 			, RECORD_CD		  = #{recordCategory}
 			, RECORD_DETAIL   = #{recordDetail}
@@ -103,9 +109,12 @@
 			, RECORD_DTM      = #{recordDtm}
 			, RECORD_MEMO     = #{recordMemo}
 			, UPD_DT          = sysdate() 
-			, UPD_USER_ID     = #{userId}  
+			, UPD_USER_ID     = #{userId} 
+			</otherwise>
+		</choose>
 		WHERE 1=1
 		AND RECORD_ID = #{recordId}
 		AND USER_ID = #{userId}
 	</update>
+	
 </mapper>

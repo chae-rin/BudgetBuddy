@@ -38,7 +38,7 @@ public class BudgetServiceImpl implements BudgetService {
 	}
 	
 	@Override
-	public int updBudgetInfo(Map<String, String> params) throws Exception {
+	public int updBudgetInfo(Map<String, Object> params) throws Exception {
 		return budgetRepository.updBudgetInfo(params);
 	}
 }
