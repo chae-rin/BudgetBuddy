@@ -30,8 +30,6 @@ public class CommonController {
 	@GetMapping("/code")
     public ResponseEntity<Map<String, Object>> selectCodeList(@RequestParam Map<String,Object> params) {
     	Map<String, Object> result = new HashMap<>();
-    	
-    	System.out.println("code!");
     	try 
     	{
 			List<CommonDTO> codeList = commonService.selectCodeList(params);

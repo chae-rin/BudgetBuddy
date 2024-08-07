@@ -34,8 +34,6 @@ public class BudgetController {
 	// 수입/지출 내역 조회
 	@GetMapping("/list")
     public ResponseEntity<Map<String, Object>> selectBudgetList(@RequestParam Map<String,Object> params) {
-    	
-		System.out.println("list");
 		
     	Map<String, Object> result = new HashMap<>();
     	try 
@@ -109,9 +107,15 @@ public class BudgetController {
     public ResponseEntity<Map<String, Object>> regBudgetInfo(@RequestParam Map<String, String> params) {
 
         Map<String, Object> response = new HashMap<>();
-
+        
         try 
         {
+        	String category = (params.get("recordType").equals("0")) ? params.get("expendCategory") : params.get("incomeCategory");
+        	params.put("recordCategory", category);
+        	
+        	System.out.println("insert..." + params);
+            
+        	
         	int regResult = budgetService.regBudgetInfo( params );
             String result = (regResult == 0)? "FAIL" : "SUCCESS";
            
@@ -132,16 +136,11 @@ public class BudgetController {
     // 수입/지출 정보 조회
  	@GetMapping("/info")
      public ResponseEntity<Map<String, Object>> getBudgetInfo(@RequestParam Map<String,Object> params) {
-     	
- 		System.out.println("info");
- 		System.out.println(params);
  		
      	Map<String, Object> result = new HashMap<>();
      	try 
      	{
  			BudgetDTO budgetList = budgetService.getBudgetInfo(params);
- 			
- 			System.out.println(budgetList.getRecord_amount());
  			result.put("data", budgetList);
  		} 
      	catch (Exception e) 
@@ -164,6 +163,12 @@ public class BudgetController {
         try 
         {
         	params.put("size", params.size());
+        	
+        	String category = (params.get("recordType").equals("0")) ? (String)params.get("expendCategory") : (String)params.get("incomeCategory");
+        	params.put("recordCategory", category);
+        	
+        	System.out.println( "update....." + params );
+        	
         	int updResult = budgetService.updBudgetInfo( params );
             String result = (updResult == 0)? "FAIL" : "SUCCESS";
            

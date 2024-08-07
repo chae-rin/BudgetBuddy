@@ -35,6 +35,7 @@
 		WHERE 1=1
 		AND USER_ID = #{userId}
 		AND DATE_FORMAT(record_dtm, '%Y-%m') = #{recordDt}
+		AND RECORD_DEL_YN = 'N'
 	</select>
 	
 	<insert id="regBudgetInfo" parameterType="hashMap">
@@ -90,6 +91,7 @@
 		WHERE 1=1
 		AND RECORD_ID = #{recordId}
 		AND USER_ID = #{userId}
+		AND RECORD_DEL_YN = 'N'
 	</select>
 	
 	
