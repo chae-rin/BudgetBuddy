@@ -1,6 +1,7 @@
 package com.budgetbuddy.finance.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,9 @@ public class UserController {
     public void registerUser(@RequestBody UserDTO userDTO) {
     	// 회원가입    	
     	userDTO.setUser_email(userDTO.getUser_email().toLowerCase());
+    	
+    	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    	userDTO.setUser_pw(bCryptPasswordEncoder.encode(userDTO.getUser_pw()));
 
     	try {
     		userService.registerUser(userDTO);
@@ -67,36 +71,6 @@ public class UserController {
     	}
     }
     
-    @PostMapping("/loginPassword")
-    public String loginPassword(@RequestBody UserDTO userDTO) {
-    	String encryptedPW = null;
-    	try {
-    		encryptedPW = userService.getEncryptedPW(userDTO);
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    	return encryptedPW;
-    }
-    
-//    @PostMapping("/login")
-//    public String login(@RequestBody UserDTO userDTO) {
-//    	// 로그인    	
-//    	UserDTO dtoResult = null;
-//    	
-//    	try {
-//    		dtoResult = userService.login(userDTO);
-//    	}
-//    	catch (Exception e) {
-//    		e.printStackTrace();
-//    	}
-//    	
-//    	if(dtoResult == null) {
-//    		return "fail";
-//    	} else {
-//    		return "success";
-//    	}
-//    }
-    
     @PostMapping("/findId")
     public String findId(@RequestBody UserDTO userDTO) {
     	// 아이디 찾기
@@ -134,10 +108,26 @@ public class UserController {
     @PostMapping("/resetPw")
     public void resetPw(@RequestBody UserDTO userDTO) {
     	// 비밀번호 리셋
+    	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    	userDTO.setUser_pw(bCryptPasswordEncoder.encode(userDTO.getUser_pw()));
+    	
     	try {
     		userService.resetPassword(userDTO);
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
+    }
+    
+    @PostMapping("/findById")
+    public UserDTO findByUserId(@RequestBody UserDTO userDTO) {
+    	// 아이디로 유저 정보 조회
+    	UserDTO userInfo = new UserDTO();
+    	try {
+    		userInfo = userService.findByUserId(userDTO);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return userInfo;
     }
 }
