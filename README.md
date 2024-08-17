@@ -17,6 +17,11 @@
 <img src="https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white"/> <img src="https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=Spring-Security&logoColor=white"/> 
 
 * * *     
+📊 System Architecture 
+-------------
+![image](https://github.com/user-attachments/assets/f28272f7-bb8d-4c85-81b6-72cf253c8830) 
+
+* * *     
 📌 주요기능
 -------------
 ⭐ 
@@ -24,5 +29,5 @@
 * * *     
 📊 ERD 
 -------------
-![image](https://github.com/user-attachments/assets/c2235822-19f8-4794-83f1-318cf508f8e2)
+![image](https://github.com/user-attachments/assets/c2235822-19f8-4794-83f1-318cf508f8e2) 
 
