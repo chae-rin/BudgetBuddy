@@ -17,14 +17,20 @@
 <img src="https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white"/> <img src="https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=Spring-Security&logoColor=white"/> 
 
 * * *     
+📌 기능
+-------------
+⭐ 로그인 기능
+- Spring security 를 활용한 .. 어쩌구 ..
+
+⭐ 가계부 기능
+- 로그인한 회원의 월별 수입/지출 내역을 조회합니다. RESTful API를 설계하여 프론트(React.js)와 통신합니다. 
+
+
+* * *     
 📊 System Architecture 
 -------------
 ![image](https://github.com/user-attachments/assets/f28272f7-bb8d-4c85-81b6-72cf253c8830) 
 
-* * *     
-📌 주요기능
--------------
-⭐ 
 
 * * *     
 📊 ERD 
