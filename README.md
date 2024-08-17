@@ -22,7 +22,7 @@
 ⭐ 
 
 * * *     
-🔠 ERD
+📊 ERD 
 -------------
 ![image](https://github.com/user-attachments/assets/c2235822-19f8-4794-83f1-318cf508f8e2)
 
