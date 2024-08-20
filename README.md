@@ -28,7 +28,7 @@
 * * *     
 📊 System Architecture 
 -------------
-![image](https://github.com/user-attachments/assets/f28272f7-bb8d-4c85-81b6-72cf253c8830) 
+![image](https://github.com/user-attachments/assets/af974263-4818-42f7-a473-900b1a7b4c78)
 
 
 * * *     
